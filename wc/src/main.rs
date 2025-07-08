@@ -73,8 +73,8 @@ impl fmt::Display for WcError {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         match self {
             Self::NoFileProvided => write!(f, "Usage: wc [-l] [-w] [-c] <file_path>"),
-            Self::Io(e) => write!(f, "Error reading file: {}", e),
-            Self::InvalidArg(e) => write!(f, "Invalid arg: {}", e),
+            Self::Io(e) => write!(f, "Error reading file: {e}"),
+            Self::InvalidArg(e) => write!(f, "Invalid arg: {e}"),
         }
     }
 }
@@ -87,7 +87,7 @@ impl From<io::Error> for WcError {
 
 fn main() {
     if let Err(e) = run() {
-        eprint!("{}", e);
+        eprint!("{e}");
     }
 }
 
@@ -118,15 +118,15 @@ fn run() -> Result<(), WcError> {
     }
 
     if flags.lines {
-        print!("{} ", lines);
+        print!("{lines} ");
     }
 
     if flags.words {
-        print!("{} ", words);
+        print!("{words} ");
     }
 
     if flags.bytes {
-        print!("{} ", bytes);
+        print!("{bytes} ");
     }
 
     Ok(())

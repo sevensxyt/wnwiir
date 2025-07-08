@@ -54,10 +54,10 @@ impl fmt::Display for RleError {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         match self {
             Self::NoFileProvided => write!(f, "Usage: rle <file_path>"),
-            Self::Io(e) => write!(f, "io error: {}", e),
-            Self::Fmt(e) => write!(f, "fmt error: {}", e),
-            Self::InvalidArg(arg) => write!(f, "Invalid arg: {}", arg),
-            Self::ParseCount(e) => write!(f, "Error parsing number: {}", e),
+            Self::Io(e) => write!(f, "io error: {e}"),
+            Self::Fmt(e) => write!(f, "fmt error: {e}"),
+            Self::InvalidArg(arg) => write!(f, "Invalid arg: {arg}"),
+            Self::ParseCount(e) => write!(f, "Error parsing number: {e}"),
         }
     }
 }
@@ -76,7 +76,7 @@ impl From<fmt::Error> for RleError {
 
 fn main() {
     if let Err(e) = run() {
-        eprintln!("{}", e);
+        eprintln!("{e}");
     }
 }
 
@@ -90,7 +90,7 @@ fn run() -> Result<(), RleError> {
         encode(reader)?
     };
 
-    println!("{}", result);
+    println!("{result}");
     Ok(())
 }
 
@@ -110,7 +110,7 @@ fn encode(reader: BufReader<File>) -> Result<String, RleError> {
                 }
                 pc if c == pc => count += 1,
                 pc => {
-                    write!(result, "{}{}", pc, count)?;
+                    write!(result, "{pc}{count}")?;
                     count = 1;
                     prev = c;
                 }

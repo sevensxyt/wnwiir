@@ -21,7 +21,7 @@ impl Args {
                 "-w" => flags.words = true,
                 "-c" => flags.bytes = true,
                 flag if flag.starts_with("-") => {
-                    return Err(WcError::InvalidArgs(flag.to_string()));
+                    return Err(WcError::InvalidArg(flag.to_string()));
                 }
                 path => file_path = Some(PathBuf::from(path)),
             }
@@ -66,15 +66,15 @@ impl Flags {
 enum WcError {
     NoFileProvided,
     Io(io::Error),
-    InvalidArgs(String),
+    InvalidArg(String),
 }
 
 impl fmt::Display for WcError {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         match self {
-            WcError::NoFileProvided => write!(f, "Usage: wc [-l] [-w] [-c] <file_path>"),
-            WcError::Io(e) => write!(f, "Error reading file: {}", e),
-            WcError::InvalidArgs(e) => write!(f, "Invalid arg: {}", e),
+            Self::NoFileProvided => write!(f, "Usage: wc [-l] [-w] [-c] <file_path>"),
+            Self::Io(e) => write!(f, "Error reading file: {}", e),
+            Self::InvalidArg(e) => write!(f, "Invalid arg: {}", e),
         }
     }
 }
